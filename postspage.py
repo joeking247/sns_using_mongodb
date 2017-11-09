@@ -14,7 +14,7 @@ def postInterface(db, user):
     ans = user
     switch = {1: insertPost, 2: deletePost, 3: showPost}
     switchnum = None
-    while switchnum not in {1, 2, 3}:
+    while True:
         print()
         print("=============================================")
         print("글 관련 페이지. \n내 아이디: %s" % ans['uid'])
