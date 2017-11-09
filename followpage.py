@@ -157,4 +157,3 @@ def banfollow(db, uid):
                        # print("error")
                 else:
                     return followInterface(db, uid)
-

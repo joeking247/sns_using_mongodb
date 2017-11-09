@@ -22,7 +22,6 @@ def mainpage(db):
             else:
                 print("제대로 선택해")
 
-
 if __name__ == "__main__":
     '''
     call mainpage()

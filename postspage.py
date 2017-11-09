@@ -81,4 +81,3 @@ def showPost(db, user):
         print("촌스러워: ", str(one['촌스러워']))
         print("-----------------------------")
 
-#postInterface(db, user)
