@@ -18,7 +18,10 @@ There can be a few options to sort the posts such as posting date or alphabetica
     count = 0
     while True:
         uid = userid
-        followings = list(db.follow.find({"follower": uid}))
+        followings = []
+        for f in list(db.follow.find({"follower": uid})):
+            followings.append(f["following"])
+        print(followings)
 
         if not followings:
             print("\n\n누구를 팔로우 해야 뉴스피드를 보여주지!\n\n")
