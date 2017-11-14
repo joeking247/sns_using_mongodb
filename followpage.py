@@ -11,7 +11,7 @@ def followInterface(db, uid):
         print("3. 내가 팔로우하고 있는 사람들 확인하기")
         print("4. 나를 팔로우하고 있는 사람들 확인하기")
         print("5. 차단하기")
-        print("0. 종료하기")
+        print("0. 뒤로가기")
 
         switchnum =input("뭐할래? 번호를 입력해라: ")
 
@@ -36,7 +36,7 @@ def following(db, uid):
             for idx in range(len(res)):
                 one = res[idx]
                 print("["+str(idx+1)+"]", one['following'])
-            return followInterface(db,uid)
+            return
 
     except:
         print("에러")
@@ -55,14 +55,14 @@ def followers(db, uid):
     except:
         print("error")
     finally:
-        return followInterface(db,uid)
+        return
 
 
 def follow(db, uid):
     while True:
         wantfollow = input("팔로우 하고 싶은 사람의 id를 알려줘(뒤로가고 싶으면 엔터키):")
         if not wantfollow:
-            return followInterface(db, uid)
+            return
         else:
             try:
                 cur = db.users.find_one({"uid": wantfollow})
@@ -75,7 +75,7 @@ def follow(db, uid):
                     else:
                         db.follow.insert_one({"follower":uid, "following":wantfollow})
                         print("팔로우 성공>_<")
-                        followInterface(db, uid)
+                        return
 
             except Exception as e:
                 sys.stderr.write("could not operate following %s\n" %e)
@@ -120,12 +120,12 @@ def unfollow(db, uid):
                             if conf0 == 'y':
                                 db.follow.delete_one({"follower":uid, "following":unfoll})
                                 print("언팔로우 성공>_<")
-                                return followInterface(db, uid)
+                                return
 
                 finally:
                     pass
             else:
-                return followInterface(db, uid)
+                return
 
 
 
@@ -133,7 +133,7 @@ def banfollow(db, uid):
         res = list(db.follow.find({"following":uid}))
         if not res:
             print("너를 팔로우하는 사람 아무도 없는데 차단은 무슨")
-            return followInterface(db, uid)
+            return
         else:
             while True:
                 banfoll = input("차단할 유저의 아이디를 입력해라(뒤로가고 싶으면 엔터키):")
@@ -156,4 +156,4 @@ def banfollow(db, uid):
                    # except:
                        # print("error")
                 else:
-                    return followInterface(db, uid)
+                    return

@@ -5,6 +5,8 @@ from pymongo import MongoClient
 # from main import mainpage
 import postspage
 import followpage
+import wall
+import newsfeed
 
 userconnection = []
 client = MongoClient()
@@ -161,7 +163,11 @@ def mystatus(db, uid):
     '''
     user = db.users.find_one({"uid": uid})
     print("\n\n")
-    print(user['status'])
+    followings = db.follow.find({"follower":uid}).count()
+    followers = db.follow.find({"following":uid}).count()
+    print("팔로우하고 있는 사람 수:", str(followings),"/","나를 팔로우하는 사람 수:", str(followers))
+    print()
+    print("\t+++++내 상태+++++\n", user['status'])
     print("꺄르륵!")
     print("\n\n")
     time.sleep(2)
@@ -179,7 +185,8 @@ def userpage(db, uid):
     '''
     user page
     '''
-    switch = {1: mystatus, 2: cgstatus, 3: followpage.followInterface, 4: postspage.postInterface}
+    switch = {1: mystatus, 2: cgstatus, 3: followpage.followInterface, 4: postspage.postInterface, 5:wall.getPosts,
+              6:newsfeed.getPosts}
     switchnum = None
     while True:
         print()
@@ -189,10 +196,12 @@ def userpage(db, uid):
         print("\t2. 내 상태를 변경")
         print("\t3. 팔로잉/팔로우 확인 및 설정")
         print("\t4. 내 글 관리")
+        print("\t5. 담벼락")
+        print("\t6. 뉴스피드")
         print("\t0. 뒤로 가기\n")
         switchnum = input("뭐할래? 번호를 입력해라: ")
 
-        if switchnum.isdigit() and int(switchnum) in {0, 1, 2, 3, 4}:
+        if switchnum.isdigit() and int(switchnum) in {0, 1, 2, 3, 4, 5, 6}:
             if int(switchnum) == 0:
                 return
             else:
