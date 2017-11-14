@@ -30,7 +30,7 @@ def following(db, uid):
         res = list(db.follow.find({"follower":uid}))
         if not res:
             print("팔로우하는 사람 없음")
-            return followInterface(db, uid)
+            return
         else:
             print("너가 팔로우하는 사람들")
             for idx in range(len(res)):

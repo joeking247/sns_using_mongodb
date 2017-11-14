@@ -19,32 +19,37 @@ There can be a few options to sort the posts such as posting date or alphabetica
     while True:
         uid = userid
         followings = list(db.follow.find({"follower": uid}))
+
         if not followings:
             print("\n\n누구를 팔로우 해야 뉴스피드를 보여주지!\n\n")
             time.sleep(1)
             return
         else:
             res = list(db.post.find({"uid": {"$in": followings}}).sort("time", -1).skip(count * 5).limit(5))
-
-            for apost in res:
-                printer(apost, uid)
-
-            more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터").strip()
-
-            if not more:
+            if not res:
+                print("\n\n아무도 글을 안 썼네\n\n")
+                time.sleep(1)
                 return
             else:
-                if more == "1":
-                    count += 1
-                    res = list(db.post.find({"uid": {"$in": followings}}).sort("time", -1).skip(count * 5).limit(5))
-                    if not res:
-                        print("\n"*3)
-                        print("이게 끝이야")
-                        print("\n"*3)
-                        time.sleep(1)
-                        return
-                    else:
-                        for apost in res:
-                            printer(apost, uid)
+                for apost in res:
+                    printer(apost, uid)
+
+                more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터").strip()
+
+                if not more:
+                    return
+                else:
+                    if more == "1":
+                        count += 1
+                        res = list(db.post.find({"uid": {"$in": followings}}).sort("time", -1).skip(count * 5).limit(5))
+                        if not res:
+                            print("\n"*3)
+                            print("이게 끝이야")
+                            print("\n"*3)
+                            time.sleep(1)
+                            return
+                        else:
+                            for apost in res:
+                                printer(apost, uid)
 
 
