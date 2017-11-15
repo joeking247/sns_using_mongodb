@@ -1,9 +1,9 @@
 import time
 
-def printer(apost, uid):
+def printer(apost):
     print("=" * 30)
     print()
-    print("time:", apost["time"], "\tuser id:", uid)
+    print("time:", apost["time"], "\tuser id:", apost['uid'])
     print("\n" + apost["content"])
     print("\n좋아요:", apost["촌스러워"])
     print("=" * 30)
@@ -21,7 +21,6 @@ There can be a few options to sort the posts such as posting date or alphabetica
         followings = []
         for f in list(db.follow.find({"follower": uid})):
             followings.append(f["following"])
-        print(followings)
 
         if not followings:
             print("\n\n누구를 팔로우 해야 뉴스피드를 보여주지!\n\n")
@@ -35,7 +34,7 @@ There can be a few options to sort the posts such as posting date or alphabetica
                 return
             else:
                 for apost in res:
-                    printer(apost, uid)
+                    printer(apost)
 
                 more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터").strip()
 
@@ -53,6 +52,6 @@ There can be a few options to sort the posts such as posting date or alphabetica
                             return
                         else:
                             for apost in res:
-                                printer(apost, uid)
+                                printer(apost)
 
 
