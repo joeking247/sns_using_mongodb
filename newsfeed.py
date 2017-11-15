@@ -1,5 +1,6 @@
 import time
 
+
 def printer(apost):
     print("=" * 30)
     print()
