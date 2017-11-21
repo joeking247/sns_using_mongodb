@@ -186,7 +186,7 @@ def userpage(db, uid):
     user page
     '''
     switch = {1: mystatus, 2: cgstatus, 3: followpage.followInterface, 4: postspage.postInterface, 5:wall.getPosts,
-              6:newsfeed.getPosts}
+              6:newsfeed.getPosts, 7:postspage.showHash}
     switchnum = None
     while True:
         print()
@@ -198,10 +198,11 @@ def userpage(db, uid):
         print("\t4. 내 글 관리")
         print("\t5. 담벼락")
         print("\t6. 뉴스피드")
+        print("\t7. 해시태그 검색")
         print("\t0. 뒤로 가기\n")
         switchnum = input("뭐할래? 번호를 입력해라: ")
 
-        if switchnum.isdigit() and int(switchnum) in {0, 1, 2, 3, 4, 5, 6}:
+        if switchnum.isdigit() and int(switchnum) in {0, 1, 2, 3, 4, 5, 6, 7}:
             if int(switchnum) == 0:
                 return
             else:

@@ -24,7 +24,7 @@ Remind the lab4 that dealt with cursor.
         for apost in res:
             printer(apost, uid)
 
-        more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터").strip()
+        more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터")
 
         if not more:
             return

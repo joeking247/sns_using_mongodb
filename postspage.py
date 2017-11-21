@@ -1,4 +1,7 @@
 import time
+import re
+import pymongo
+
 """
 from pymongo import MongoClient
 client = MongoClient()
@@ -47,7 +50,16 @@ def insertPost(db, uid):
         uid = uid
         name = db.users.find_one({"uid":uid})['name']
         t = time.ctime()
-        db.post.insert_one({'uid':uid, 'name':name, 'time':t, 'content':posting, '촌스러워':0})
+
+        # hash tag 기능 구현
+        # '#'기준으로 parse
+        p = re.compile(r"#\w+")
+        res = p.findall(posting)
+        tags = list(map(lambda x:x[1:], res))
+        db.post.insert_one({'uid':uid, 'name':name, 'time':t, 'content':posting, '촌스러워':0, 'tags':tags})
+        db.post.create_index([('tags', pymongo.TEXT)])
+
+
 
 
 def deletePost(db, uid):
@@ -81,6 +93,28 @@ def showPost(db, uid):
         print()
         print("["+str(idx+1)+"]",one['time'],"\t",one['uid'])
         print("\n", one['content'], "\n")
-        print("촌스러워: ", str(one['촌스러워']))
+        print("좋아요: ", str(one['촌스러워']))
         print("-----------------------------")
+
+
+def showHash(db, uid):
+    tag = input("검색할 단어를 하나 입력해라. 모든 띄어쓰기는 무시되니까 참고해(뒤로 가려면 엔터): ")
+    if not tag:
+        return
+    else:
+        word = tag.replace(" ","")
+        res = list(db.post.find({'$text':{'$search':word}}))
+        if not res:
+            print("-----------------------------")
+            print("\n\n그런 이상한 태그로는 아무도 글을 안썼어.\n\n")
+            print("-----------------------------")
+            time.sleep(2)
+        else:
+            for idx in range(len(res)):
+                one = res[idx]
+                print()
+                print("[" + str(idx + 1) + "]", one['time'], "\tuser id: ", one['uid'])
+                print("\n", one['content'], "\n")
+                print("좋아요: ", str(one['촌스러워']))
+                print("-----------------------------")
 
