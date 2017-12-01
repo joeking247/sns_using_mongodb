@@ -21,26 +21,30 @@ Remind the lab4 that dealt with cursor.
 
         res = list(db.post.find({"uid": uid}).sort("time", -1).skip(count * 5).limit(5))
         #first = db.post.find({"uid":uid}).sort("time",-1).limit(5)
-        for apost in res:
-            printer(apost, uid)
-
-        more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터")
-
-        if not more:
+        if not res:
+            print("글을 써야 보여주지")
             return
         else:
-            if more == "1":
-                count += 1
-                res = list(db.post.find({"uid":uid}).sort("time",-1).skip(count*5).limit(5))
-                if not res:
-                    print("\n"*3)
-                    print("이게 끝이야")
-                    print("\n"*3)
-                    time.sleep(1)
-                    return
-                else:
-                    for apost in res:
-                        printer(apost, uid)
+            for apost in res:
+                printer(apost, uid)
+
+            more = input("더 보고 싶으면 1을 입력하고, 돌아가고 싶으면 엔터")
+
+            if not more:
+                return
+            else:
+                if more == "1":
+                    count += 1
+                    res = list(db.post.find({"uid":uid}).sort("time",-1).skip(count*5).limit(5))
+                    if not res:
+                        print("\n"*3)
+                        print("이게 끝이야")
+                        print("\n"*3)
+                        time.sleep(1)
+                        return
+                    else:
+                        for apost in res:
+                            printer(apost, uid)
 
 
 

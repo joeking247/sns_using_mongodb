@@ -80,10 +80,15 @@ def deletePost(db, uid):
         if not num:
             return
         else:
-            conf0 = input(str(num)+"번 지우는 거 확실해? 다시 안 물어볼거야\n확실하면 y를 입력해라: ").lower()
-            if conf0 == 'y':
+            try:
                 go = all[int(num)-1]
-                db.post.delete_one({"_id":go["_id"]})
+                conf0 = input(str(num) + "번 지우는 거 확실해? 다시 안 물어볼거야\n확실하면 y를 입력해라: ").lower()
+                if conf0 == 'y':
+                    db.post.delete_one({"_id":go["_id"]})
+                    print("삭제 완료!")
+                    return
+            except:
+                print("없는 번호 치지 마라")
 
 
 def showPost(db, uid):

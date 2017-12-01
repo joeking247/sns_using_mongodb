@@ -64,29 +64,32 @@ def follow(db, uid):
         if not wantfollow:
             return
         else:
-            try:
-                cur = db.users.find_one({"uid": wantfollow})
-                if not cur:
-                    print("그런 유저 없다")
-                if cur:
-                    res = db.follow.find_one({"follower":uid, "following":wantfollow})
-                    if res:
-                        print("이미 팔로우 하고 있잖아!")
-                    else:
-                        db.follow.insert_one({"follower":uid, "following":wantfollow})
-                        print("팔로우 성공>_<")
-                        return
+            if uid == wantfollow:
+                print("너가 너를 팔로우하는 건 좀 이상해^^; 안해줌")
+            else:
+                try:
+                    cur = db.users.find_one({"uid": wantfollow})
+                    if not cur:
+                        print("그런 유저 없다")
+                    if cur:
+                        res = db.follow.find_one({"follower":uid, "following":wantfollow})
+                        if res:
+                            print("이미 팔로우 하고 있잖아!")
+                        else:
+                            db.follow.insert_one({"follower":uid, "following":wantfollow})
+                            print("팔로우 성공>_<")
+                            return
 
-            except Exception as e:
-                sys.stderr.write("could not operate following %s\n" %e)
-            '''
-            1. 팔로우하고자 하는 유저가 존재하는지 확인, 없으면 경고 출력
-
-            2. 팔로우하고자 하는 유저가 나의 팔로잉 목록에 있는지 확인, 있으면 경고 출력
-
-            3. 팔로잉 목록에 없으면,
-                나의 팔로잉 목록에 팔로우할 유저id 추가 + 상대방의 팔로워 목록에 내 id 추가
-            '''
+                except Exception as e:
+                    sys.stderr.write("could not operate following %s\n" %e)
+                '''
+                1. 팔로우하고자 하는 유저가 존재하는지 확인, 없으면 경고 출력
+    
+                2. 팔로우하고자 하는 유저가 나의 팔로잉 목록에 있는지 확인, 있으면 경고 출력
+    
+                3. 팔로잉 목록에 없으면,
+                    나의 팔로잉 목록에 팔로우할 유저id 추가 + 상대방의 팔로워 목록에 내 id 추가
+                '''
 
 def unfollow(db, uid):
     '''
